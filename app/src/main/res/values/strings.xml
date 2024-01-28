@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">CAMBUSApp</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Giuliani Adriano</string>
+    <string name="nav_header_subtitle">231126</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_prod">Prodotti</string>
+    <string name="menu_ricette">Ricette</string>
+    <string name="menu_posizioni">Posizioni</string>
+    <string name="titoloNuovoProdotto">AGGIUNGI IL TUO PRODOTTO</string>
+    <string name="Nomeprodotto">Nome del prodotto</string>
+    <string name="datascadenza">Data di Scadenza</string>
+    <string name="selscadDate">         Seleziona data di scadenza</string>
+    <string name="entro">Entro</string>
+    <string name="preferibilmente"> Preferibilmente entro</string>
+    <string name="tiposcadenza">Seleziona tipo di scadenza</string>
+    <string name="impostazioni">IMPOSTAZIONI</string>
+    <string name="tresholdScadenza">Inserisci quanti giorni in anticipo vuoi ricevere una notifica di scadenza dei prodotti:</string>
+    <string name="togglePos">Disattiva/Attiva notifiche \n basate su posizione</string>
+    <string name="aggiungi">Aggiungi</string>
+    <string name="creaRicetta">Genera ricetta</string>
+    <string name="elimina">Cancella selezionati</string>
+    <string name="notyButton">Rimuovi prodotti scaduti</string>
+    <string name="INDIETRO">INDIETRO</string>
+    <string name="OK">APPLICA</string>
+    <string name="erroreRicetta">\"Errore nella generazione della ricetta, \\n \" +\n                    \"prova ad impostare correttamente data e ora e riprova\"</string>
+    <string name="errore">Errore nella generazione della ricetta</string>
+    <string name="mexPermessi"><![CDATA[Alcune funzionalità come le notifiche basate sulla posizione non saranno disponibili, attivale in\napp>permessi>posizione>consenti sempre]]></string>
+</resources>

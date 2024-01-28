@@ -1,0 +1,8 @@
+
+<resources>
+    <attr name="colorHighlighter" format="color" />
+    <attr name="colorOnHighlighter" format="color" />
+    <attr name="colorHighlighterContainer" format="color" />
+    <attr name="colorOnHighlighterContainer" format="color" />
+    <attr name="harmonizeHighlighter" format="boolean" />
+</resources>

@@ -1,0 +1,7 @@
+<resources>
+    <attr name="colorHighliter" format="color"/>
+    <attr name="colorOnHighliter" format="color"/>
+    <attr name="colorHighliterContainer" format="color"/>
+    <attr name="colorOnHighliterContainer" format="color"/>
+    <attr name="harmonizeHighliter" format="boolean"/>
+</resources>
