@@ -86,6 +86,14 @@ class Ricetta( titolo :String="", durata : String= "", difficolta : String="", c
         return titolo == other.titolo
     }
 
+    override fun hashCode(): Int {
+        var result = titolo.hashCode()
+        result = 31 * result + durata.hashCode()
+        result = 31 * result + difficolta.hashCode()
+        result = 31 * result + contenuto.hashCode()
+        return result
+    }
+
 
 }
 

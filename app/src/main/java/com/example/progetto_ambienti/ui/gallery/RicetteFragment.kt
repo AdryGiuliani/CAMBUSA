@@ -27,7 +27,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -43,17 +42,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.progetto_ambienti.ui.AppTheme
-import com.example.progetto_ambienti.ui.Highliter
 import com.example.progetto_ambienti.Applicazione
 import com.example.progetto_ambienti.DatabaseHelper
 import com.example.progetto_ambienti.Ricetta
 import com.example.progetto_ambienti.arrayRicette
 import com.example.progetto_ambienti.databinding.FragmentRicetteBinding
+import com.example.progetto_ambienti.ui.AppTheme
+import com.example.progetto_ambienti.ui.Highliter
 import com.example.progetto_ambienti.ui.home.ProdottiFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
 
 
 class RicetteFragment : Fragment() {
@@ -69,9 +66,6 @@ class RicetteFragment : Fragment() {
     private var selectedRecipe = mutableStateMapOf<String, Ricetta>()
     private lateinit var customCallback: OnBackPressedCallback
 
-    class VistaSelezione() {
-        var bool by mutableStateOf(false)
-    }
 
     private var selezioneView = ProdottiFragment.VistaSelezione()
 
