@@ -153,22 +153,18 @@ class RicetteFragment : Fragment() {
 
             var selezionato by remember { mutableStateOf(Ricetta().titolo) } //permette alla variabile di aggiornarsi
             //al variare delle condizioni
-            //var daRimuovere = mutableStateOf(toremoveselected)
             val vistaRimozioneLocal = remember { selezioneView }
-            val indiceCliccato = { index: String -> selezionato = index }
-
             LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
                 items(
-                    ricette, key = { it -> it.titolo }
+                    ricette, key = { it.titolo }
                 ) {
                     cardCliccabile(
                         it,
-                        indiceCliccato,
                         selezionato,
                         ricToRemove,
-                        vistaRimozioneLocal!!
+                        vistaRimozioneLocal
                     )
 
                 }
@@ -181,7 +177,6 @@ class RicetteFragment : Fragment() {
         @OptIn(ExperimentalFoundationApi::class)
         private fun cardCliccabile(
             oggetto: Ricetta,
-            indiceCliccato: (String) -> Unit,
             selezionato: String,
             toRimuovere: SnapshotStateMap<String, Ricetta>,
             vistaRimozioneLocal: ProdottiFragment.VistaSelezione
@@ -209,9 +204,12 @@ class RicetteFragment : Fragment() {
                             espandi = !espandi
                     },
                     onLongClick = {
+                        /*debug toast
                         Toast
                             .makeText(context, "longclick", Toast.LENGTH_SHORT)
                             .show()
+
+                         */
                         if (!vistaRimozioneLocal.bool) {
                             binding.rmvButton.show()
                             customCallback.isEnabled = true
@@ -222,14 +220,6 @@ class RicetteFragment : Fragment() {
                     }
                 ),
                 color = if (toRimuovere.contains(oggetto.titolo)) Highliter else Color.Transparent,
-                /*contentColor = if (vistaRimozione)
-                                if (isSystemInDarkTheme())
-                                    MaterialTheme.colorScheme.onSurfaceVariant
-                                else
-                                    light_onHighlighter
-                            else
-                                MaterialTheme.colorScheme.onSurface,
-             */
                 shape = RectangleShape
             ) {
                 Card(

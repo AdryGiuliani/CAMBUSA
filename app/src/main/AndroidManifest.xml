@@ -93,12 +93,6 @@
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".BRTEST" android:exported="true">
-            <intent-filter>
-                <action android:name="APP_SPECIFIC_BROADCAST" />
-            </intent-filter>
-        </receiver>
-
 
     </application>
 
