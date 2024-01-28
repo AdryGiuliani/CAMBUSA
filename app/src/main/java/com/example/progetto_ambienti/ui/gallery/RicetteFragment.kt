@@ -54,19 +54,11 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 class RicetteFragment : Fragment() {
-
     private var _binding: FragmentRicetteBinding? = null
-
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
-
-
     private var db: DatabaseHelper = DatabaseHelper(Applicazione.getApplicationContext())
     private var selectedRecipe = mutableStateMapOf<String, Ricetta>()
     private lateinit var customCallback: OnBackPressedCallback
-
-
     private var selezioneView = ProdottiFragment.VistaSelezione()
 
     override fun onCreate(savedInstanceState: Bundle?) {

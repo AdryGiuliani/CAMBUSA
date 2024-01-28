@@ -29,4 +29,5 @@
     <string name="erroreRicetta">\"Errore nella generazione della ricetta, \\n \" +\n                    \"prova ad impostare correttamente data e ora e riprova\"</string>
     <string name="errore">Errore nella generazione della ricetta</string>
     <string name="mexPermessi"><![CDATA[Alcune funzionalità come le notifiche basate sulla posizione non saranno disponibili, attivale in\napp>permessi>posizione>consenti sempre]]></string>
+    <string name="ATTENDI_RICETTA">Attendi, generazione ricetta in corso...</string>
 </resources>

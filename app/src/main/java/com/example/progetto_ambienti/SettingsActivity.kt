@@ -69,7 +69,7 @@ class SettingsActivity : AppCompatActivity() {
                             onCheckedChange = {
                                 AVVISI_POSIZIONE= !AVVISI_POSIZIONE
 
-                                //setto a true la disattivazione se è stato deselezionata l'opzione
+                                //set a true la disattivazione se è stato deselezionata l'opzione
                                 //e viceversa per l'attivazione
                                 disattivazioneGeofence = !AVVISI_POSIZIONE
                                 attivazioneGeofence = AVVISI_POSIZIONE

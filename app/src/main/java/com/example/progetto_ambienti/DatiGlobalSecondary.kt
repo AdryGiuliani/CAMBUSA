@@ -32,7 +32,7 @@ val KEY_INGREDIENTI = "ingredienti"
 val KEYIMPOSTAZIONI = "impostazioni"
 val KEYSCADENZA = "impostazioni"
 var SOGLIA_SCAD by mutableLongStateOf(10L)
-var variazioneProdotti = true
+var variazioneProdotti = false
 var arrayProdotti = mutableStateListOf<Prodotto>()
 var arrayRicette = mutableStateListOf<Ricetta>()
 var arrayPosizioni = mutableStateListOf<Posizione>()

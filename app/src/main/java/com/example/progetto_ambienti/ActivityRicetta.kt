@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.dp
 import com.example.progetto_ambienti.ui.AppTheme
 import okhttp3.Call
@@ -69,7 +70,7 @@ class ActivityRicetta : AppCompatActivity() {
         ingredienti = intent.getSerializableExtra(KEY_INGREDIENTI) as ArrayList<String>
         val stato : TextView= findViewById(R.id.infoStato)
         val compose : ComposeView =findViewById (R.id.sezione_compose)
-        stato.text = "Attendi generazione ricetta.."
+        stato.text = getString(R.string.ATTENDI_RICETTA)
 
         val callback = object : OnBackPressedCallback(
             true // default to enabled
@@ -100,7 +101,7 @@ class ActivityRicetta : AppCompatActivity() {
             setContent {
                 AppTheme {
                     if (ricettaToDisplay.first().titolo == "ERRORE")
-                        stato.text = "Errore nel recupero della ricetta, riprova più tardi"
+                        stato.text = getString(R.string.errore)
                     else if (ricettaToDisplay.first().titolo != ""){
                         esitoOk=true
                         stato.visibility= View.GONE
@@ -199,7 +200,7 @@ class ActivityRicetta : AppCompatActivity() {
                     Text(text = "SALVA RICETTA")
                 }
                 Button(onClick = {
-                    onBackPressedDispatcher.onBackPressed()
+                    finish()
                 }) {
                     Text(text = "INDIETRO")
                 }
@@ -210,6 +211,7 @@ class ActivityRicetta : AppCompatActivity() {
 
 
     fun getRisposta(domanda : String, responso: (String)-> Unit){
+        val leng = Locale.current.language
         val apikey="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"
         val url = "https://api.openai.com/v1/chat/completions"
         var risultato = "Errore impossibile recuperare risposta"
@@ -220,7 +222,7 @@ class ActivityRicetta : AppCompatActivity() {
      [
          {
         "role": "system",
-        "content": "In italiano, dati in input n ingredienti genera una ricetta con i seguenti campi json: titolo, difficolta, durata, quantita necessarie e procedimento (in un unico object)"
+        "content": "Rispondi nella seguente lingua: $leng, dati in input n ingredienti genera una ricetta step-by-step con i seguenti campi json: titolo, difficolta, durata, quantita necessarie e procedimento (in un unico object)"
       },
       {
         "role": "user",
