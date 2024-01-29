@@ -13,7 +13,6 @@ open class Prodotto(nome :String="", scadenza : String="", preferibilmente :Bool
     fun getNome(){ nome}
     fun getScadenza(){ scadenza}
     fun getPreferibilmente(){ preferibilmente}
-    fun getProdotto(p : Prodotto){}
 
     constructor(parcel: Parcel) : this() {
         nome = parcel.readString()!!
@@ -93,13 +92,6 @@ class Ricetta( titolo :String="", durata : String= "", difficolta : String="", c
     }
 
 
-}
-
-class Difficolta(difficolta : String="") {
-    var difficolta = difficolta
-    override fun toString(): String {
-        return "Difficolta(difficolta='$difficolta')"
-    }
 }
 
 class Posizione(nome: String="",ind: String="", lat: Double=0.0, long:Double=0.0) : Parcelable{
