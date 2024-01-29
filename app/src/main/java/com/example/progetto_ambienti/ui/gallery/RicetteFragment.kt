@@ -242,6 +242,7 @@ class RicetteFragment : Fragment() {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(text = r.titolo, Modifier.padding(8.dp), fontWeight = FontWeight.Bold)
+                    //tasto share
                     IconButton(onClick = {
                         val intent = Intent(Intent.ACTION_SEND)
                         val txtRicetta = toText(r)

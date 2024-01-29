@@ -124,6 +124,7 @@ class ActivityRicetta : AppCompatActivity() {
         Log.d("ricette", durata)
         Log.d("ricette", diff)
         Log.d("ricette", proc)
+        esitoOk=true
         ricettaToDisplay[0]=Ricetta(titolo, durata, diff, proc)
     }
 
@@ -132,7 +133,6 @@ class ActivityRicetta : AppCompatActivity() {
         for (ingr in ingredienti){
             sb.append("$ingr, ")
         }
-        //sb.append("(nel formato json {titolo, difficolta, tempo necessario,  (dosi e procedimento ad elenco)}) ")
         return sb.toString()
     }
 
@@ -200,7 +200,7 @@ class ActivityRicetta : AppCompatActivity() {
                     Text(text = "SALVA RICETTA")
                 }
                 Button(onClick = {
-                    finish()
+                    onBackPressedDispatcher.onBackPressed()
                 }) {
                     Text(text = "INDIETRO")
                 }
@@ -212,7 +212,8 @@ class ActivityRicetta : AppCompatActivity() {
 
     fun getRisposta(domanda : String, responso: (String)-> Unit){
         val leng = Locale.current.language
-        val apikey="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"
+        //
+        val apikey= BuildConfig.OPENAI_API_KEY
         val url = "https://api.openai.com/v1/chat/completions"
         var risultato = "Errore impossibile recuperare risposta"
         val requestBody="""{
@@ -222,7 +223,7 @@ class ActivityRicetta : AppCompatActivity() {
      [
          {
         "role": "system",
-        "content": "Rispondi nella seguente lingua: $leng, dati in input n ingredienti genera una ricetta step-by-step con i seguenti campi json: titolo, difficolta, durata, quantita necessarie e procedimento (in un unico object)"
+        "content": "Rispondi nella seguente lingua: $leng, dati in input n ingredienti genera una ricetta step-by-step con i seguenti campi json: titolo, difficolta, durata, quantita necessarie e procedimento (in un unico object), se non rilevi ingredienti genera comunque una ricetta di errore"
       },
       {
         "role": "user",

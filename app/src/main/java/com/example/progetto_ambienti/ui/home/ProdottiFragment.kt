@@ -107,16 +107,13 @@ class ProdottiFragment : Fragment() {
             }
         contractRicetta =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == Activity.RESULT_OK) {
-                    Toast.makeText(context, "Ricetta correttamente creata", Toast.LENGTH_SHORT)
-                        .show()
-
-                } else
+                if (result.resultCode == Activity.RESULT_CANCELED) {
                     Toast.makeText(
                         context,
                         "Errore nella generazione delle ricetta",
                         Toast.LENGTH_SHORT
                     ).show()
+                }
             }
     }
 

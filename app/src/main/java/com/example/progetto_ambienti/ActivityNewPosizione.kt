@@ -35,7 +35,7 @@ class ActivityNewPosizione : AppCompatActivity(), OnMapReadyCallback ,
     GoogleMap.OnMyLocationClickListener {
 
     lateinit var db : DatabaseHelper
-    lateinit var searchView: androidx.appcompat.widget.SearchView
+    lateinit var searchView: SearchView
     private lateinit var mappa : GoogleMap
     private lateinit var mappaView : View
     private var esitoOk =false
@@ -117,7 +117,6 @@ class ActivityNewPosizione : AppCompatActivity(), OnMapReadyCallback ,
 
     @SuppressLint("MissingPermission")
     override fun onMapReady(map: GoogleMap) {
-
         LocationServices.getFusedLocationProviderClient(Applicazione.getApplicationContext()).lastLocation.addOnSuccessListener {
             val posLATLONG= LatLng(it.latitude, it.longitude)
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(posLATLONG,18F))
@@ -184,7 +183,6 @@ class ActivityNewPosizione : AppCompatActivity(), OnMapReadyCallback ,
                     newPos.nome = txt.text.toString()
                     if (vecchiePos.contains(newPos) or posAggiunte.contains(newPos)) {
                         txt.error = "Nome posizione già presente, impossibile aggiungere"
-                        //Toast.makeText(Applicazione.getApplicationContext(),"Nome posizione già presente, impossibile aggiungere", Toast.LENGTH_SHORT).show()
                     } else {
                         map.addMarker(
                             MarkerOptions().position(latlong).title(newPos.nome)
@@ -207,8 +205,7 @@ class ActivityNewPosizione : AppCompatActivity(), OnMapReadyCallback ,
         return false
     }
 
-    override fun onMyLocationClick(loc: Location) {
-    }
+    override fun onMyLocationClick(loc: Location) {}
 
 
 }
