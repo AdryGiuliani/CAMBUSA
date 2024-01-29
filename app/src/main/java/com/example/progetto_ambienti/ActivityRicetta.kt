@@ -215,6 +215,7 @@ class ActivityRicetta : AppCompatActivity() {
         val apikey= BuildConfig.OPENAI_API_KEY
         val url = "https://api.openai.com/v1/chat/completions"
         var risultato = "Errore impossibile recuperare risposta"
+        Log.v("data",domanda)
         val requestBody="""{
      "model": "gpt-3.5-turbo-1106",
      "response_format" : {"type" : "json_object"},
@@ -222,7 +223,7 @@ class ActivityRicetta : AppCompatActivity() {
      [
          {
         "role": "system",
-        "content": "Rispondi nella seguente lingua: $leng, dati in input n ingredienti genera una ricetta step-by-step con i seguenti campi json: titolo, difficolta, durata, quantita necessarie e procedimento (in un unico object), se non rilevi ingredienti genera comunque una ricetta di errore"
+        "content": "dati in input n ingredienti genera una ricetta con i seguenti campi json: titolo, difficolta, durata, quantita necessarie e procedimento (in un unico object)"
       },
       {
         "role": "user",

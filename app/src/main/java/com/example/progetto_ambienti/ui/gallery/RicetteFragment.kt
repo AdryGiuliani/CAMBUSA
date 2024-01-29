@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
@@ -238,12 +239,13 @@ class RicetteFragment : Fragment() {
                     .padding(vertical = 8.dp)
             ) {
                 Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.Absolute.SpaceBetween,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text(text = r.titolo, Modifier.padding(8.dp), fontWeight = FontWeight.Bold)
+                    Text(text = r.titolo, Modifier.padding(8.dp).weight(0.8F), fontWeight = FontWeight.Bold)
                     //tasto share
-                    IconButton(onClick = {
+                    IconButton(modifier = Modifier.padding(8.dp).weight(0.2F),
+                        onClick = {
                         val intent = Intent(Intent.ACTION_SEND)
                         val txtRicetta = toText(r)
                         intent.setType("text/plain")

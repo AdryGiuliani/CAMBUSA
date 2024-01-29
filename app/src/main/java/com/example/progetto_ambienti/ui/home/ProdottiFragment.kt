@@ -62,6 +62,7 @@ import com.example.progetto_ambienti.ui.AppTheme
 import com.example.progetto_ambienti.ui.Highliter
 import com.example.progetto_ambienti.ui.md_theme_dark_surfaceTint
 import com.example.progetto_ambienti.ui.md_theme_light_error
+import com.example.progetto_ambienti.ui.md_theme_light_errorContainer
 import com.example.progetto_ambienti.variazioneProdotti
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.MainScope
@@ -330,7 +331,7 @@ class ProdottiFragment : Fragment() {
     @Composable
     fun uiProdotto(p: Prodotto, espandi: Boolean) {
         val errColor = md_theme_light_error
-        val warnColor = md_theme_dark_surfaceTint
+        val warnColor = md_theme_light_errorContainer
         val scadMillis = SimpleDateFormat("dd/MM/yyyy").parse(p.scadenza).time
         var s = stato.lontano
         if (scadMillis - curDate < 0L)

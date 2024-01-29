@@ -176,14 +176,14 @@ class ActivityAggiuntaProdotto : ComponentActivity() {
                         onDismissRequest = {
                             dataSelect = datePickerState.selectedDateMillis?.let {
                                 convertMillisToDate(it)
-                            } ?: ""
+                            } ?: dataSelect
                             opendialog = false
                         },
                         confirmButton = {
                             TextButton(onClick = {
                                 dataSelect = datePickerState.selectedDateMillis?.let {
                                     convertMillisToDate(it)
-                                } ?: ""
+                                } ?: dataSelect
                                 opendialog = false
                             }) {
                                 Text(text = "OK")
@@ -193,7 +193,7 @@ class ActivityAggiuntaProdotto : ComponentActivity() {
                             TextButton(onClick = {
                                 dataSelect = datePickerState.selectedDateMillis?.let {
                                     convertMillisToDate(it)
-                                } ?: ""
+                                } ?: dataSelect
                                 opendialog = false
                             }) {
                                 Text(text = "CHIUDI")
