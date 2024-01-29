@@ -20,13 +20,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -39,14 +37,13 @@ import androidx.compose.ui.unit.dp
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.progetto_ambienti.ui.AppTheme
 import com.example.progetto_ambienti.AUTHCONCESSE
 import com.example.progetto_ambienti.AVVISI_POSIZIONE
 import com.example.progetto_ambienti.ActivityNewPosizione
 import com.example.progetto_ambienti.Applicazione
 import com.example.progetto_ambienti.DatabaseHelper
-import com.example.progetto_ambienti.KEY_GEOVECT
 import com.example.progetto_ambienti.GeofenceBR
+import com.example.progetto_ambienti.KEY_GEOVECT
 import com.example.progetto_ambienti.KEY_OPERAZIONE
 import com.example.progetto_ambienti.KEY_POS_AGGIUNTI
 import com.example.progetto_ambienti.KEY_POS_PREC
@@ -55,11 +52,9 @@ import com.example.progetto_ambienti.Posizione
 import com.example.progetto_ambienti.R
 import com.example.progetto_ambienti.arrayPosizioni
 import com.example.progetto_ambienti.databinding.FragmentPosizioniBinding
+import com.example.progetto_ambienti.ui.AppTheme
 import com.google.android.gms.location.GeofencingClient
 import com.google.android.gms.location.LocationServices
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-
 
 
 class PosizioniFragment : Fragment(){

@@ -1,9 +1,7 @@
 package com.example.progetto_ambienti
 
-import android.icu.util.TimeUnit
 import android.os.Parcel
 import android.os.Parcelable
-import android.util.TimeUtils
 import java.text.SimpleDateFormat
 
 open class Prodotto(nome :String="", scadenza : String="", preferibilmente :Boolean=false) : Parcelable, Comparable<Prodotto>{

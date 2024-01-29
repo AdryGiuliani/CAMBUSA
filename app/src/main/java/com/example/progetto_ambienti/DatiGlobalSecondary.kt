@@ -1,8 +1,5 @@
 package com.example.progetto_ambienti
 
-import android.app.IntentService
-import android.content.Context
-import android.content.Intent
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.runtime.getValue
@@ -11,16 +8,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.work.Worker
-import androidx.work.WorkerParameters
-import com.example.progetto_ambienti.ui.home.ProdottiFragment
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.debounce
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlin.random.Random

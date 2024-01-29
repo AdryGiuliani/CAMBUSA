@@ -2,13 +2,11 @@ package com.example.progetto_ambienti
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.DialogInterface
 import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
 import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.Toast
@@ -16,12 +14,9 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.LocationSource
-import com.google.android.gms.maps.MapView
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CircleOptions

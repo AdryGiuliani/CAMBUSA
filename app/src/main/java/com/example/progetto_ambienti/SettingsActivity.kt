@@ -97,7 +97,7 @@ class SettingsActivity : AppCompatActivity() {
                                 edit.putLong(KEYSCADENZA, valueScadenza)
                                 edit.apply()
                                 SOGLIA_SCAD=valueScadenza
-                                if (AVVISI_POSIZIONE xor statoIniziale){
+                                if (AVVISI_POSIZIONE != statoIniziale){
                                     if (disattivazioneGeofence){
                                         Log.d("geofence", "geofence disattivate")
                                         val intent = Intent(Applicazione.getApplicationContext(), GeofenceBR::class.java)
