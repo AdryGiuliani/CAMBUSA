@@ -9,7 +9,6 @@ class BroadcastCancella : BroadcastReceiver(){
     override fun onReceive(context: Context?, intent: Intent?) {
         NotificationManagerCompat.from(Applicazione.getApplicationContext()).cancel(
             ID_NOTIFICA_CANCELLA_SCADUTI)
-
         val darimuovere = intent?.getParcelableArrayListExtra<Prodotto>(KEY_PROD_RIMOSSI_NOTY)
         val db = DatabaseHelper(Applicazione.getApplicationContext())
         if (darimuovere != null) {

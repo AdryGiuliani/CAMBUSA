@@ -64,19 +64,20 @@ class GeofenceBR :BroadcastReceiver() {
                 .setCircularRegion(gf.lat, gf.long, DEFAULT_RAGGIO.toFloat())
                 .setNotificationResponsiveness(TimeUnit.MINUTES.toMillis(5).toInt())
                 .setLoiteringDelay(TimeUnit.MINUTES.toMillis(1).toInt())
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL)
                 .setExpirationDuration(Geofence.NEVER_EXPIRE)
                 .build())
         }
         val geoRequest = GeofencingRequest.Builder()
             .addGeofences(geofencesList)
-            .setInitialTrigger(Geofence.GEOFENCE_TRANSITION_ENTER)
+            .setInitialTrigger(Geofence.GEOFENCE_TRANSITION_DWELL)
             .build()
 
 
         val intentNotify = Intent(context,GeofenceBR::class.java)
         intentNotify.putExtra(KEY_OPERAZIONE,Operazioni.NOTIFY_DWELL.toString())
 
+        //necessaria distinzione a causa delle flag obbligatiorie
         val geoIntent =
             if (Build.VERSION.SDK_INT>= Build.VERSION_CODES.S)
                 PendingIntent.getBroadcast(context,0,intentNotify,

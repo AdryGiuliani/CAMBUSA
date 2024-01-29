@@ -109,9 +109,11 @@ class PosizioniFragment : Fragment(){
                     for (pos in posDaAdd){
                         arrayPosizioni.add(pos)
                     }
-                    intentAggiunta.putExtra(KEY_OPERAZIONE, Operazioni.ADDGEO.toString())
-                    intentAggiunta.putParcelableArrayListExtra(KEY_GEOVECT,posDaAdd)
-                    Applicazione.getApplicationContext().sendBroadcast(intentAggiunta)
+                    if(AVVISI_POSIZIONE){
+                        intentAggiunta.putExtra(KEY_OPERAZIONE, Operazioni.ADDGEO.toString())
+                        intentAggiunta.putParcelableArrayListExtra(KEY_GEOVECT,posDaAdd)
+                        Applicazione.getApplicationContext().sendBroadcast(intentAggiunta)
+                    }
                     Toast.makeText(context, "Posizione correttamente aggiunta", Toast.LENGTH_SHORT)
                         .show()
                 } else
@@ -126,7 +128,6 @@ class PosizioniFragment : Fragment(){
     ): View {
         if(!AVVISI_POSIZIONE)
             Toast.makeText(Applicazione.getApplicationContext(), "Notifiche di posizione disattivate, riattivale nelle impostazioni", Toast.LENGTH_SHORT).show()
-
 
         val posizioniViewModel =
             ViewModelProvider(this)[PosizioniViewModel::class.java]
@@ -177,7 +178,6 @@ class PosizioniFragment : Fragment(){
 
         }
     }
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun cardCliccabile(pos: Posizione) {
 
@@ -218,6 +218,9 @@ class PosizioniFragment : Fragment(){
 
 }
 
+/**
+ * genera Posizione da Cursore di tupla posizioni
+ */
 fun toPosizione(curPosizione: Cursor): Posizione {
    val posizione = Posizione()
    posizione.nome = curPosizione.getString(curPosizione.getColumnIndexOrThrow("nome"))

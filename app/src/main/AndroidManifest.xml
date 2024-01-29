@@ -52,10 +52,6 @@
 
         <activity android:name=".SettingsActivity"
             android:exported="false">
-            <intent-filter>
-                <action android:name="android.intent.action.INSERT" />
-            </intent-filter>
-
         </activity>
 
         <activity android:name=".ActivityRicetta"

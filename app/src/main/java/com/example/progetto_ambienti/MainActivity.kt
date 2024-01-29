@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.provider.Settings
 import android.view.Menu
 import android.view.MenuItem
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -21,6 +23,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.OneTimeWorkRequestBuilder
@@ -29,12 +32,12 @@ import androidx.work.WorkManager
 import androidx.work.WorkRequest
 import com.example.progetto_ambienti.databinding.ActivityMainBinding
 import com.google.android.gms.location.Geofence
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 
-var AUTHCONCESSE=false
-var AUTHNOTIFY=false
 class MainActivity : AppCompatActivity() {
 
 
@@ -42,26 +45,20 @@ class MainActivity : AppCompatActivity() {
 
 
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private val contrOption = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){}
     private lateinit var binding: ActivityMainBinding
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         if (!DB_LETTO){
             //lettura dati secondari
-            val uploadWorkRequest: WorkRequest =
-                OneTimeWorkRequestBuilder<DatiGlobalSecondary>()
-                    .build()
-            WorkManager
-                .getInstance(Applicazione.getApplicationContext())
-                .enqueue(uploadWorkRequest)
+            val vmLettura : DatiGlobalSecondary by viewModels()
+            lifecycleScope.launch {
+                vmLettura.letturaDatiFlow()
+            }
             //
         }
-
-
         verificaPermessi()
-
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -96,7 +93,16 @@ class MainActivity : AppCompatActivity() {
         db.close()
     }
 
-
+    /**
+     * pulisce la memoria locale alla chiusura dell'app
+     */
+    override fun onDestroy() {
+        arrayProdotti.clear()
+        arrayRicette.clear()
+        arrayPosizioni.clear()
+        DB_LETTO=false
+        super.onDestroy()
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
             // Inflate the menu; this adds items to the action bar if it is present.
@@ -109,17 +115,24 @@ class MainActivity : AppCompatActivity() {
             return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
         }
 
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+    /**
+     * Intent del menù opzioni
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
             when (item.itemId) {
                 R.id.action_settings -> {
-                    val intent = Intent(this, SettingsActivity::class.java)
-                    this.startActivity(intent)
+                    contrOption.launch(Intent(this, SettingsActivity::class.java))
                     return true
                 }
             }
             return super.onOptionsItemSelected(item)
         }
 
+    /**
+     * verifica ed eventualmente richiede i permessi dell'app, purtroppo è necessario "Permetti sempre" all'accesso della posizione
+     * per l'utilizzo di geofence e tale permesso non può essere inserito nel dialog di default nell'app
+     */
     private fun verificaPermessi() {
         if (ActivityCompat.checkSelfPermission(
                 Applicazione.getApplicationContext(),
@@ -157,18 +170,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Imposta, se non già attivo, il work manager per gestire le notifiche giornaliere sui prodotti
+     */
     private fun avviaWMNotifiche() {
         val uwr=
             PeriodicWorkRequestBuilder<NotificaProdottiWM>(
                 1, TimeUnit.DAYS
             )
-                .setInitialDelay(10, TimeUnit.SECONDS) //for debug purpose dovrebbe essere di 1gg
+                .setInitialDelay(12, TimeUnit.HOURS)
                 .build()
         WorkManager
             .getInstance(Applicazione.getApplicationContext())
-            .enqueueUniquePeriodicWork(ID_WMNoty,ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,uwr)
+            .enqueueUniquePeriodicWork(ID_WMNoty,ExistingPeriodicWorkPolicy.KEEP,uwr)
     }
 
+    /**
+     * gestisce il risultato dell'utente alla richiesta permessi
+     */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -224,19 +243,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun creaGeofence(id :String, lat: Double, long : Double, raggio : Float): Geofence{
-        return Geofence.Builder().apply {
-            setRequestId(id)
-            setCircularRegion(lat, long, raggio)
-            setNotificationResponsiveness(
-                TimeUnit.MINUTES.toMillis(5).toInt()
-            ) //riduce il consumo di batteria
-            setLoiteringDelay(TimeUnit.MINUTES.toMillis(1).toInt())
-            setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL)
-        }
-            .build()
-    }
 }
+
+/**
+ * Legge le sharedPreferences
+ */
 fun leggiImpostazioni() {
     val preference = Applicazione.getApplicationContext().getSharedPreferences(KEYIMPOSTAZIONI,0)
     SOGLIA_SCAD = preference.getLong(KEYSCADENZA, 10L)

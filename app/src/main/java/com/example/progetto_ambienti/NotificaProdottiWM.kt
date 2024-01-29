@@ -10,15 +10,17 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.work.CoroutineWorker
-import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.example.progetto_ambienti.ui.home.generaText
-import okhttp3.internal.wait
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
 
 class NotificaProdottiWM(appContext : Context, workerParams: WorkerParameters):
     CoroutineWorker(appContext,workerParams) {
+
+    /**
+     * routine periodica per le notifiche giornaliere sui prodotti
+     */
     override suspend fun doWork(): Result {
         val prodotti = mutableListOf<Prodotto>()
         val db = DatabaseHelper(Applicazione.getApplicationContext())

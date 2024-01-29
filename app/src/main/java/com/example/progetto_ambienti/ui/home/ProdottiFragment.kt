@@ -1,10 +1,7 @@
 package com.example.progetto_ambienti.ui.home
 
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.PendingIntent
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.os.Bundle
 import android.util.Log
@@ -30,8 +27,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -45,40 +40,29 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.core.app.ActivityCompat
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat.getString
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.progetto_ambienti.ui.AppTheme
-import com.example.progetto_ambienti.ui.md_theme_dark_surfaceTint
-import com.example.progetto_ambienti.ui.md_theme_light_error
-import com.example.progetto_ambienti.AUTHCONCESSE
-import com.example.progetto_ambienti.AUTHNOTIFY
 import com.example.progetto_ambienti.ActivityAggiuntaProdotto
 import com.example.progetto_ambienti.ActivityRicetta
 import com.example.progetto_ambienti.Applicazione
-import com.example.progetto_ambienti.BroadcastCancella
 import com.example.progetto_ambienti.DatabaseHelper
 import com.example.progetto_ambienti.KEY_INGREDIENTI
 import com.example.progetto_ambienti.KEY_PROD_AGGIUNTI
-import com.example.progetto_ambienti.KEY_PROD_RIMOSSI_NOTY
-import com.example.progetto_ambienti.MainActivity
 import com.example.progetto_ambienti.Prodotto
 import com.example.progetto_ambienti.R
 import com.example.progetto_ambienti.SOGLIA_SCAD
 import com.example.progetto_ambienti.arrayProdotti
 import com.example.progetto_ambienti.databinding.FragmentProdottiBinding
+import com.example.progetto_ambienti.ui.AppTheme
 import com.example.progetto_ambienti.ui.Highliter
+import com.example.progetto_ambienti.ui.md_theme_dark_surfaceTint
+import com.example.progetto_ambienti.ui.md_theme_light_error
 import com.example.progetto_ambienti.variazioneProdotti
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
-import java.lang.StringBuilder
 import java.text.SimpleDateFormat
 import java.util.concurrent.TimeUnit
-import kotlin.random.Random
 
 //id dell'extra tra main e aggiunta
 //aggiornate all'avvio della main activity
@@ -143,9 +127,6 @@ class ProdottiFragment : Fragment() {
     ): View {
         val prodottiViewModel =
             ViewModelProvider(this)[ProdottiViewModel::class.java]
-
-
-
         _binding = FragmentProdottiBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
@@ -217,6 +198,9 @@ class ProdottiFragment : Fragment() {
         }
     }
 
+    /**
+     * permette di uscire dalla modalità selezione con il tasto indietro
+     */
     private fun annullaSelezioneCallback(): OnBackPressedCallback {
         val ret = object : OnBackPressedCallback(false) {
             override fun handleOnBackPressed() {
@@ -253,21 +237,6 @@ class ProdottiFragment : Fragment() {
         else
             binding.textHome.visibility = View.GONE
 
-        if (ActivityCompat.checkSelfPermission(
-                Applicazione.getApplicationContext(),
-                android.Manifest.permission.POST_NOTIFICATIONS
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-
-            /*
-            if (threadNotifica != null) {
-                threadNotifica?.interrupt()
-                threadNotifica = ThreadNotificaScadenza(arrayProdotti)
-                threadNotifica?.isDaemon = false
-                threadNotifica?.start()
-            }
-*/
-        }
 
         var selezionato by remember { mutableStateOf(Prodotto().nome) } //permette alla variabile di aggiornarsi
         //al variare delle condizioni
@@ -282,7 +251,7 @@ class ProdottiFragment : Fragment() {
             items(
                 prodotti, key = { it -> it.nome }
             ) {
-                cardCliccabile(it, indiceCliccato, selezionato, prodToRemove, vistaRimozioneLocal)
+                cardCliccabile(it, selezionato, prodToRemove, vistaRimozioneLocal)
 
             }
 
@@ -296,7 +265,6 @@ class ProdottiFragment : Fragment() {
     @Composable
     fun cardCliccabile(
         oggetto: Prodotto,
-        cliccato: (String) -> Unit,
         selezionato: String,
         toRimuovere: SnapshotStateMap<String, Prodotto>,
         vistaRimozioneLocal: VistaSelezione

@@ -7,7 +7,6 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.example.progetto_ambienti.ui.gallery.toRicetta
-import com.example.progetto_ambienti.ui.home.ProdottiFragment
 import com.example.progetto_ambienti.ui.home.toProdotto
 import com.example.progetto_ambienti.ui.slideshow.toPosizione
 import java.text.SimpleDateFormat
@@ -32,6 +31,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "databaseProd
         db?.insert("difficolta",null,contentDiff("media"))
         db?.insert("difficolta",null,contentDiff("difficile"))
 
+        //la chiave esterna poteva essere evitata, ho preferito utilizzarla per esercizio personale
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {

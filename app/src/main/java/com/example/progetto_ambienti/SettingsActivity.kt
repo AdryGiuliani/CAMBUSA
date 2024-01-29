@@ -3,35 +3,34 @@ package com.example.progetto_ambienti
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.activity.OnBackPressedCallback
-import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.material3.Button
-import androidx.compose.material3.Switch
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 import com.example.progetto_ambienti.ui.AppTheme
 import com.example.progetto_ambienti.ui.md_theme_dark_onBackground
 import com.example.progetto_ambienti.ui.md_theme_light_onBackground
@@ -100,10 +99,12 @@ class SettingsActivity : AppCompatActivity() {
                                 SOGLIA_SCAD=valueScadenza
                                 if (AVVISI_POSIZIONE xor statoIniziale){
                                     if (disattivazioneGeofence){
+                                        Log.d("geofence", "geofence disattivate")
                                         val intent = Intent(Applicazione.getApplicationContext(), GeofenceBR::class.java)
                                         intent.putExtra(KEY_OPERAZIONE, Operazioni.DISATTIVA_ALL_GEO.toString())
                                         intent.also { sendBroadcast(it) }
                                     }else if (attivazioneGeofence){
+                                        Log.d("geofence", "geofence attivate")
                                         val intent = Intent(Applicazione.getApplicationContext(), GeofenceBR::class.java)
                                         intent.putExtra(KEY_OPERAZIONE, Operazioni.ATTIVA_ALL_GEO.toString())
                                         intent.also { sendBroadcast(it) }
