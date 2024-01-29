@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
@@ -23,6 +24,9 @@ class NotificaProdottiWM(appContext : Context, workerParams: WorkerParameters):
      */
     override suspend fun doWork(): Result {
         val prodotti = mutableListOf<Prodotto>()
+        val sogliaScadenza= Applicazione.getApplicationContext().getSharedPreferences(
+            KEYIMPOSTAZIONI, 0).getInt(KEYSCADENZA,10).toLong()
+
         val db = DatabaseHelper(Applicazione.getApplicationContext())
         for (p in db.getProdotti())
             prodotti.add(p)
@@ -40,10 +44,8 @@ class NotificaProdottiWM(appContext : Context, workerParams: WorkerParameters):
             val scadMillis = SimpleDateFormat("dd/MM/yyyy").parse(p.scadenza).time
             if ((scadMillis - System.currentTimeMillis()) <= 0) {
                 scaduti.add(p)
-            } else if ((scadMillis - System.currentTimeMillis()) <= TimeUnit.DAYS.toMillis(
-                    SOGLIA_SCAD
-                )
-            ) {
+            } else if ((scadMillis - System.currentTimeMillis()) <= TimeUnit.DAYS.toMillis(sogliaScadenza))
+            {
                 inScadenza.add(p)
             }
 

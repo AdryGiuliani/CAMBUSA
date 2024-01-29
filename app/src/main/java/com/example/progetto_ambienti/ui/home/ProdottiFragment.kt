@@ -12,9 +12,13 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -224,6 +228,7 @@ class ProdottiFragment : Fragment() {
     /**
      * Crea un elenco di prodotti sottoforma di CARD da poter cliccare per ricevere più informazioni
      */
+    @OptIn(ExperimentalFoundationApi::class)
     @Composable
     fun ElencoCliccabile(
         prodotti: SnapshotStateList<Prodotto>,
@@ -237,19 +242,16 @@ class ProdottiFragment : Fragment() {
 
         var selezionato by remember { mutableStateOf(Prodotto().nome) } //permette alla variabile di aggiornarsi
         //al variare delle condizioni
-        //var daRimuovere = mutableStateOf(toremoveselected)
         val vistaRimozioneLocal = remember { rimozioneView }
-        val indiceCliccato = { index: String -> selezionato = index }
-
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(20.dp),
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
-
             items(
-                prodotti, key = { it -> it.nome }
+                prodotti, key = {it.nome}
             ) {
-                cardCliccabile(it, selezionato, prodToRemove, vistaRimozioneLocal)
-
+                Box(modifier = Modifier.animateItemPlacement(tween(300))) {
+                    cardCliccabile(it, selezionato, prodToRemove, vistaRimozioneLocal)
+                }
             }
 
         }
@@ -271,12 +273,10 @@ class ProdottiFragment : Fragment() {
         var espandi by remember { mutableStateOf(false) }
         Surface(modifier = Modifier
             .fillMaxSize()
+            .animateContentSize()
             .combinedClickable(
                 enabled = true,
                 onClick = {
-                    Toast
-                        .makeText(context, "click", Toast.LENGTH_SHORT)
-                        .show()
                     if (vistaRimozioneLocal.bool) {
                         if (!toRimuovere.contains(oggetto.nome))
                             toRimuovere[oggetto.nome] = oggetto
@@ -310,14 +310,6 @@ class ProdottiFragment : Fragment() {
                 }
             ),
             color = if (toRimuovere.contains(oggetto.nome)) Highliter else Color.Transparent,
-            /*contentColor = if (vistaRimozione)
-                                if (isSystemInDarkTheme())
-                                    MaterialTheme.colorScheme.onSurfaceVariant
-                                else
-                                    light_onHighlighter
-                            else
-                                MaterialTheme.colorScheme.onSurface,
-             */
             shape = RectangleShape
         ) {
             Card(
@@ -328,7 +320,6 @@ class ProdottiFragment : Fragment() {
                 // corpo dell'onclick
                 if (selezionato == oggetto.nome) {
                     Log.d("test", "$oggetto , $selezionato")
-                    Toast.makeText(context, "prodotto cliccato", Toast.LENGTH_SHORT).show()
                 }
             }
         }
