@@ -58,14 +58,7 @@ class GeofenceBR :BroadcastReceiver() {
 
         val geofencesList = mutableListOf<Geofence>()
         for(gf in posizioni){
-            geofencesList.add(Geofence.Builder()
-                .setRequestId(gf.nome)
-                .setCircularRegion(gf.lat, gf.long, DEFAULT_RAGGIO.toFloat())
-                .setNotificationResponsiveness(TimeUnit.MINUTES.toMillis(5).toInt())
-                .setLoiteringDelay(TimeUnit.MINUTES.toMillis(1).toInt())
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL)
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .build())
+            geofencesList.add(creaGeofence(gf))
         }
         val geoRequest = GeofencingRequest.Builder()
             .addGeofences(geofencesList)
@@ -169,14 +162,7 @@ class GeofenceBR :BroadcastReceiver() {
 
         val geofencesList = mutableListOf<Geofence>()
         for(gf in geoFencesData){
-            geofencesList.add(Geofence.Builder()
-                .setRequestId(gf.nome)
-                .setCircularRegion(gf.lat, gf.long, DEFAULT_RAGGIO.toFloat())
-                .setNotificationResponsiveness(TimeUnit.SECONDS.toMillis(1).toInt())
-                .setLoiteringDelay(TimeUnit.SECONDS.toMillis(1).toInt())
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL)
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .build())
+            geofencesList.add( creaGeofence(gf))
         }
         val geoRequest = GeofencingRequest.Builder()
             .addGeofences(geofencesList)
@@ -218,6 +204,21 @@ class GeofenceBR :BroadcastReceiver() {
                 Log.d("GEORECEIVE", "errore inserimento geofence")
             }
         }
+    }
+
+    /**
+     * genera geofence data la posizione
+     */
+    private fun creaGeofence(gf: Posizione): Geofence {
+        val g = Geofence.Builder()
+            .setRequestId(gf.nome)
+            .setCircularRegion(gf.lat, gf.long, DEFAULT_RAGGIO.toFloat())
+            .setNotificationResponsiveness(TimeUnit.MINUTES.toMillis(3).toInt())
+            .setLoiteringDelay(TimeUnit.MINUTES.toMillis(5).toInt())
+            .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_DWELL)
+            .setExpirationDuration(Geofence.NEVER_EXPIRE)
+            .build()
+        return g
     }
 
     private fun rimuoviGeofence(intent: Intent) {

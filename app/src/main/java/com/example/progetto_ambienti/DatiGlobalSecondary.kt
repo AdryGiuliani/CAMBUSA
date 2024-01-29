@@ -77,7 +77,7 @@ class DatiGlobalSecondary: ViewModel(){
                 leggiImpostazioni()
                 variazioneProdotti = false
                 val prod =db.getProdotti().sorted()
-                val flow = prod.asFlow().onEach { delay(180L) }
+                val flow = prod.asFlow().onEach { delay(100L) }
                 flow.collect{p -> arrayProdotti.add(p) }
                 //se ho riaperto l'app non serve riaggiornare la vista dei prodotti
                 for (r in db.getRicette())

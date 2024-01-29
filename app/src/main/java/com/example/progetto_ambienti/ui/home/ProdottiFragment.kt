@@ -17,6 +17,7 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.combinedClickable
+import androidx.compose.foundation.gestures.FlingBehavior
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -249,11 +250,10 @@ class ProdottiFragment : Fragment() {
             items(
                 prodotti, key = {it.nome}
             ) {
-                Box(modifier = Modifier.animateItemPlacement(tween(300))) {
+                Box(modifier = Modifier.animateItemPlacement(tween(500))) {
                     cardCliccabile(it, selezionato, prodToRemove, vistaRimozioneLocal)
                 }
             }
-
         }
     }
 
@@ -295,9 +295,6 @@ class ProdottiFragment : Fragment() {
                         espandi = !espandi
                 },
                 onLongClick = {
-                    Toast
-                        .makeText(context, "longclick", Toast.LENGTH_SHORT)
-                        .show()
                     if (!vistaRimozioneLocal.bool) {
                         binding.aggiungi.hide()
                         binding.rmvSelected.show()

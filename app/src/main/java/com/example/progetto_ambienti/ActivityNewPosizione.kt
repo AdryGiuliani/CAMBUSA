@@ -113,8 +113,10 @@ class ActivityNewPosizione : AppCompatActivity(), OnMapReadyCallback ,
     @SuppressLint("MissingPermission")
     override fun onMapReady(map: GoogleMap) {
         LocationServices.getFusedLocationProviderClient(Applicazione.getApplicationContext()).lastLocation.addOnSuccessListener {
-            val posLATLONG= LatLng(it.latitude, it.longitude)
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(posLATLONG,18F))
+            if (it != null){
+                val posLATLONG= LatLng(it.latitude, it.longitude)
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(posLATLONG,18F))
+            }
         }
         mappa=map
         map.isMyLocationEnabled = true
