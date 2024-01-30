@@ -157,7 +157,15 @@ class Posizione(nome: String="",ind: String="", lat: Double=0.0, long:Double=0.0
         other as Posizione
         return nome == other.nome
     }
-    
+
+    override fun hashCode(): Int {
+        var result = nome.hashCode()
+        result = 31 * result + lat.hashCode()
+        result = 31 * result + long.hashCode()
+        result = 31 * result + indirizzo.hashCode()
+        return result
+    }
+
     companion object CREATOR : Parcelable.Creator<Posizione> {
         override fun createFromParcel(parcel: Parcel): Posizione {
             return Posizione(parcel)

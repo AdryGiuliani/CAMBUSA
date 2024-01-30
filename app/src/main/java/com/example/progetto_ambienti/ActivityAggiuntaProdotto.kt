@@ -47,7 +47,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.progetto_ambienti.ui.AppTheme
-import com.example.progetto_ambienti.ui.home.ProdottiFragment
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.concurrent.TimeUnit
@@ -57,12 +56,6 @@ class ActivityAggiuntaProdotto : ComponentActivity() {
     lateinit var db : DatabaseHelper
     var esitoOk =false
     var prodottiAggiunti = ArrayList<Prodotto>()
-    class VistaSelezione() {
-        var bool by mutableStateOf(false)
-    }
-    private var selezioneView = ProdottiFragment.VistaSelezione()
-
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         db =DatabaseHelper(context = Applicazione.getApplicationContext())

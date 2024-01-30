@@ -77,7 +77,7 @@ class DatabaseHelper(context: Context) : SQLiteOpenHelper(context, "databaseProd
         val curProdotti = getProdottiCur()
         val curDate = System.currentTimeMillis()
         while (curProdotti!!.moveToNext()) {
-            var prodotto = Prodotto()
+            var prodotto: Prodotto
             try {
                 prodotto = toProdotto(curProdotti)
                 val scad = SimpleDateFormat("dd/MM/yyyy").parse(prodotto.scadenza).time

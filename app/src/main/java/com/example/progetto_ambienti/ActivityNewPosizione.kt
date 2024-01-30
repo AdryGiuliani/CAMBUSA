@@ -59,7 +59,7 @@ class ActivityNewPosizione : AppCompatActivity(), OnMapReadyCallback ,
                 var addressList: List<Address>? = listOf()
 
                 // checking if the entered location is null or not.
-                if (location != null || location == "") {
+                if (location != null && location != "") {
                     // on below line we are creating and initializing a geo coder.
                     val geocoder = Geocoder(this@ActivityNewPosizione)
                     try {

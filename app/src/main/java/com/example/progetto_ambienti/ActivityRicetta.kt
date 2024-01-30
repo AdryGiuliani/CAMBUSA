@@ -211,7 +211,7 @@ class ActivityRicetta : AppCompatActivity() {
 
     fun getRisposta(domanda : String, responso: (String)-> Unit){
         val leng = Locale.current.language
-        //
+        //possibile indicazione sulla lingua della risposta (non implementata per limiti di token su api)
         val apikey= BuildConfig.OPENAI_API_KEY
         val url = "https://api.openai.com/v1/chat/completions"
         var risultato = "Errore impossibile recuperare risposta"

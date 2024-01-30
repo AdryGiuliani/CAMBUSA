@@ -7,7 +7,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,11 +19,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -43,8 +40,8 @@ import com.example.progetto_ambienti.ui.md_theme_light_onBackground
 
 class SettingsActivity : AppCompatActivity() {
 
-    lateinit var impostazioni : SharedPreferences
-    var valueScadenza = SOGLIA_SCAD
+    private lateinit var impostazioni : SharedPreferences
+    private var valueScadenza = SOGLIA_SCAD
 
     override fun onCreate(savedInstanceState: Bundle?,) {
         super.onCreate(savedInstanceState)
@@ -62,7 +59,7 @@ class SettingsActivity : AppCompatActivity() {
                         .verticalScroll(
                             rememberScrollState(),true
                         )) {
-                        selezAvviso(coloreText, applicabile, valueScadenza)
+                        selezAvviso(coloreText, applicabile)
                         Spacer(modifier = Modifier.padding(16.dp))
                         Row(
                             modifier = Modifier
@@ -87,11 +84,6 @@ class SettingsActivity : AppCompatActivity() {
                                     attivazioneGeofence = AVVISI_POSIZIONE
 
                                     statoCheck = !statoCheck
-                                    Toast.makeText(
-                                        this@SettingsActivity,
-                                        "$AVVISI_POSIZIONE",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
                                     val edit = impostazioni.edit()
                                     edit.putBoolean(KEY_POSIZIONE, statoCheck)
                                     edit.apply()
@@ -159,7 +151,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     @Composable
-    fun selezAvviso(coloreText: Color, applicabile : Boolean, scad : Long) {
+    fun selezAvviso(coloreText: Color, applicabile : Boolean) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()

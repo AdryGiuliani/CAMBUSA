@@ -62,19 +62,12 @@ class RicetteFragment : Fragment() {
     private lateinit var customCallback: OnBackPressedCallback
     private var selezioneView = ProdottiFragment.VistaSelezione()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Toast.makeText(Applicazione.getApplicationContext(), "AAAAAA", Toast.LENGTH_SHORT).show()
-    }
 
-
-        override fun onCreateView(
+    override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
             savedInstanceState: Bundle?
         ): View {
-            Toast.makeText(Applicazione.getApplicationContext(), "BBB", Toast.LENGTH_SHORT).show()
-
             val ricetteViewModel =
                 ViewModelProvider(this).get(RicetteViewModel::class.java)
 
