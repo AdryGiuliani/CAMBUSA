@@ -15,6 +15,9 @@ import kotlinx.coroutines.launch
 import kotlin.random.Random
 
 //aggiornate all'avvio della mainActivity
+val KEY_PRODOTTI_STATE = "prodotti"
+val KEY_POSIZIONI_STATE = "posizioni"
+val KEY_RICETTE_STATE = "ricette"
 var ID_NOTIFICA_CANCELLA_SCADUTI = Random.nextInt()
 var ID_NOTIFICA_QUASI_SCADUTI= Random.nextInt()
 val ID_WMNoty="WMNotifiche"
@@ -52,8 +55,7 @@ class DatiGlobalSecondary: ViewModel(){
                  for (p in db.getProdotti())
                      arrayProdotti.add(p)
                  arrayProdotti.sort()
-                 variazioneProdotti =
-                     false //se ho riaperto l'app non serve riaggiornare la vista dei prodotti
+                 variazioneProdotti = false //se ho riaperto l'app non serve riaggiornare la vista dei prodotti
                  for (r in db.getRicette())
                      arrayRicette.add(r)
                  for (p in db.getPosizioni())

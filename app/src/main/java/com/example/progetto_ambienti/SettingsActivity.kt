@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,11 +16,15 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -49,76 +54,105 @@ class SettingsActivity : AppCompatActivity() {
         val statoIniziale = AVVISI_POSIZIONE
         setContent {
             AppTheme {
-                val coloreText = if(isSystemInDarkTheme()) md_theme_dark_onBackground else md_theme_light_onBackground
-                val applicabile by remember{mutableStateOf(true)}
-                Column(modifier = Modifier.padding(vertical = 16.dp)){
-                    selezAvviso(coloreText, applicabile, valueScadenza)
-                    Spacer(modifier = Modifier.padding(16.dp))
-                    Row(modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
+                val coloreText =
+                    if (isSystemInDarkTheme()) md_theme_dark_onBackground else md_theme_light_onBackground
+                val applicabile by remember { mutableStateOf(true) }
+                    Column(modifier = Modifier
+                        .padding(vertical = 16.dp)
+                        .verticalScroll(
+                            rememberScrollState(),true
+                        )) {
+                        selezAvviso(coloreText, applicabile, valueScadenza)
+                        Spacer(modifier = Modifier.padding(16.dp))
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
                         ) {
-                        var statoCheck by remember{mutableStateOf(AVVISI_POSIZIONE)}
-                        Text(text = stringResource(id = R.string.togglePos),
-                            modifier = Modifier.padding(horizontal = 8.dp),
-                            color = coloreText)
-                        Switch(checked = statoCheck,
-                            modifier = Modifier.padding(horizontal = 8.dp),
-                            onCheckedChange = {
-                                AVVISI_POSIZIONE= !AVVISI_POSIZIONE
-
-                                //set a true la disattivazione se è stato deselezionata l'opzione
-                                //e viceversa per l'attivazione
-                                disattivazioneGeofence = !AVVISI_POSIZIONE
-                                attivazioneGeofence = AVVISI_POSIZIONE
-
-                                statoCheck= !statoCheck
-                                Toast.makeText(this@SettingsActivity, "$AVVISI_POSIZIONE", Toast.LENGTH_SHORT).show()
-                                val edit = impostazioni.edit()
-                                edit.putBoolean(KEY_POSIZIONE, statoCheck)
-                                edit.apply()
-                            })
-                    }
-                    Spacer(modifier = Modifier.padding(vertical = 64.dp))
-                    Row(modifier = Modifier
-                        .padding(horizontal = 32.dp)
-                        .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ){
-                        Button(onClick = {finish()}) {
+                            var statoCheck by remember { mutableStateOf(AVVISI_POSIZIONE) }
                             Text(
-                                text = stringResource(id = R.string.INDIETRO)
+                                text = stringResource(id = R.string.togglePos),
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                color = coloreText
                             )
+                            Switch(checked = statoCheck,
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                                onCheckedChange = {
+                                    AVVISI_POSIZIONE = !AVVISI_POSIZIONE
+
+                                    //set a true la disattivazione se è stato deselezionata l'opzione
+                                    //e viceversa per l'attivazione
+                                    disattivazioneGeofence = !AVVISI_POSIZIONE
+                                    attivazioneGeofence = AVVISI_POSIZIONE
+
+                                    statoCheck = !statoCheck
+                                    Toast.makeText(
+                                        this@SettingsActivity,
+                                        "$AVVISI_POSIZIONE",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                    val edit = impostazioni.edit()
+                                    edit.putBoolean(KEY_POSIZIONE, statoCheck)
+                                    edit.apply()
+                                })
                         }
-                        Button(onClick = {
-                            if(applicabile) {
-                                val edit = impostazioni.edit()
-                                edit.putLong(KEYSCADENZA, valueScadenza)
-                                edit.apply()
-                                SOGLIA_SCAD=valueScadenza
-                                if (AVVISI_POSIZIONE != statoIniziale){
-                                    if (disattivazioneGeofence){
-                                        Log.d("geofence", "geofence disattivate")
-                                        val intent = Intent(Applicazione.getApplicationContext(), GeofenceBR::class.java)
-                                        intent.putExtra(KEY_OPERAZIONE, Operazioni.DISATTIVA_ALL_GEO.toString())
-                                        intent.also { sendBroadcast(it) }
-                                    }else if (attivazioneGeofence){
-                                        Log.d("geofence", "geofence attivate")
-                                        val intent = Intent(Applicazione.getApplicationContext(), GeofenceBR::class.java)
-                                        intent.putExtra(KEY_OPERAZIONE, Operazioni.ATTIVA_ALL_GEO.toString())
-                                        intent.also { sendBroadcast(it) }
+                        Spacer(modifier = Modifier.padding(vertical = 64.dp))
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = 32.dp)
+                                .fillMaxWidth(),
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                        ) {
+                            Button(onClick = { finish() }) {
+                                Text(
+                                    text = stringResource(id = R.string.INDIETRO)
+                                )
+                            }
+                            Button(onClick = {
+                                if (applicabile) {
+                                    val edit = impostazioni.edit()
+                                    edit.putLong(KEYSCADENZA, valueScadenza)
+                                    edit.apply()
+                                    SOGLIA_SCAD = valueScadenza
+                                    if (AVVISI_POSIZIONE != statoIniziale) {
+                                        if (disattivazioneGeofence) {
+                                            Log.d("geofence", "geofence disattivate")
+                                            val intent = Intent(
+                                                Applicazione.getApplicationContext(),
+                                                GeofenceBR::class.java
+                                            )
+                                            intent.putExtra(
+                                                KEY_OPERAZIONE,
+                                                Operazioni.DISATTIVA_ALL_GEO.toString()
+                                            )
+                                            intent.also { sendBroadcast(it) }
+                                        } else if (attivazioneGeofence) {
+                                            Log.d("geofence", "geofence attivate")
+                                            val intent = Intent(
+                                                Applicazione.getApplicationContext(),
+                                                GeofenceBR::class.java
+                                            )
+                                            intent.putExtra(
+                                                KEY_OPERAZIONE,
+                                                Operazioni.ATTIVA_ALL_GEO.toString()
+                                            )
+                                            intent.also { sendBroadcast(it) }
+                                        }
                                     }
-                                }
-                                finish()
-                            }else
-                                Toast.makeText(this@SettingsActivity, "Impossibile salvare, valori non validi", Toast.LENGTH_SHORT).show()
-                        }) {
-                            Text(
-                                text = stringResource(id = R.string.OK)
-                            )
+                                    finish()
+                                } else
+                                    Toast.makeText(
+                                        this@SettingsActivity,
+                                        "Impossibile salvare, valori non validi",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                            }) {
+                                Text(
+                                    text = stringResource(id = R.string.OK)
+                                )
+                            }
                         }
-                    }
                 }
             }
         }

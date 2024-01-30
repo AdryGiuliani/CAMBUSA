@@ -67,13 +67,32 @@ open class Prodotto(nome :String="", scadenza : String="", preferibilmente :Bool
 
 }
 
-class Ricetta( titolo :String="", durata : String= "", difficolta : String="", contenuto : String="") {
+class Ricetta( titolo :String="", durata : String= "", difficolta : String="", contenuto : String="") : Parcelable {
     var titolo = titolo
     var durata = durata
     var difficolta = difficolta
     var contenuto = contenuto
+
+    constructor(parcel: Parcel) : this() {
+        titolo = parcel.readString()!!
+        durata = parcel.readString()!!
+        difficolta = parcel.readString()!!
+        contenuto = parcel.readString()!!
+    }
+
     override fun toString(): String {
-        return "Ricetta( titolo='$titolo', foto=$durata, difficolta='$difficolta', contenuto = '$contenuto')"
+        return "Ricetta( titolo='$titolo', durata=$durata, difficolta='$difficolta', contenuto = '$contenuto')"
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(titolo)
+        parcel.writeString(durata)
+        parcel.writeString(difficolta)
+        parcel.writeString(contenuto)
     }
 
     override fun equals(other: Any?): Boolean {
@@ -89,6 +108,16 @@ class Ricetta( titolo :String="", durata : String= "", difficolta : String="", c
         result = 31 * result + difficolta.hashCode()
         result = 31 * result + contenuto.hashCode()
         return result
+    }
+
+    companion object CREATOR : Parcelable.Creator<Ricetta> {
+        override fun createFromParcel(parcel: Parcel): Ricetta {
+            return Ricetta(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Ricetta?> {
+            return arrayOfNulls(size)
+        }
     }
 
 

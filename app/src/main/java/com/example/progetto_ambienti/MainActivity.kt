@@ -15,6 +15,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.core.app.ActivityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
@@ -29,15 +30,14 @@ import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.example.progetto_ambienti.databinding.ActivityMainBinding
 import com.google.android.material.navigation.NavigationView
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 
 class MainActivity : AppCompatActivity() {
-
-
-
-
 
     private lateinit var appBarConfiguration: AppBarConfiguration
     private val contrOption = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){}
@@ -45,6 +45,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if (savedInstanceState!=null){
+            leggiImpostazioni()
+            recuperaListe(savedInstanceState)
+        }
         if (!DB_LETTO){
             //lettura dati secondari
             val vmLettura : DatiGlobalSecondary by viewModels()
@@ -80,6 +84,26 @@ class MainActivity : AppCompatActivity() {
 
         }
 
+    /**
+     * retrieve le liste precedenti se il layout è cambiato in orizzontale senza accedere al db
+     */
+    private fun recuperaListe(savedInstanceState: Bundle) {
+        val prod=savedInstanceState.getParcelableArrayList<Prodotto>(KEY_PRODOTTI_STATE)
+        val pos=savedInstanceState.getParcelableArrayList<Posizione>(KEY_POSIZIONI_STATE)
+        val ric=savedInstanceState.getParcelableArrayList<Ricetta>(KEY_RICETTE_STATE)
+        if(prod==null || pos==null || ric==null) //se uno solo è null vuol dire che non ho modificato io il bundle
+            return
+        for (p in prod){
+            arrayProdotti.add(p)
+        }
+        for (r in ric){
+            arrayRicette.add(r)
+        }
+        for (ps in pos){
+            arrayPosizioni.add(ps)
+        }
+        DB_LETTO = true
+    }
 
 
     override fun onPause() {
@@ -87,6 +111,29 @@ class MainActivity : AppCompatActivity() {
         val db =DatabaseHelper(Applicazione.getApplicationContext())
         db.close()
     }
+
+    /**
+     * salva le liste per gestire il caso di rotazione schermo
+     */
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val p = ArrayList<Prodotto>()
+        val r = ArrayList<Ricetta>()
+        val pos = ArrayList<Posizione> ()
+        for (p1 in arrayProdotti){
+            p.add(p1)
+        }
+        for (r1 in arrayRicette){
+            r.add(r1)
+        }
+        for (pos1 in arrayPosizioni){
+            pos.add(pos1)
+        }
+        outState.putParcelableArrayList(KEY_PRODOTTI_STATE,p)
+        outState.putParcelableArrayList(KEY_POSIZIONI_STATE,pos)
+        outState.putParcelableArrayList(KEY_RICETTE_STATE,r)
+    }
+
 
     /**
      * pulisce la memoria locale alla chiusura dell'app
